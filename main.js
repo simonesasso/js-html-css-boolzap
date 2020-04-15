@@ -8,16 +8,21 @@ $(".plane").click(
       var d = new Date();
       var ora = d.getHours().toString();
       var minuti = d.getMinutes().toString();
-      $(".display-messaggi.active").append("<div class='messaggio-inviato'>" + msg +
-      "<div class='freccina'><i class='fas fa-chevron-down'></i></div> <div class='menu-tendina'><span>Cancella messaggio</span></div><div class='ora'>" + ora + ":" + minuti + "</div></div>");
+      // handlebar template--------------
+      var source = document.getElementById("template-messaggio").innerHTML;
+      var template = Handlebars.compile(source);
+      var context = { messaggio: msg, ora: ora, minuti: minuti, inviato:true };
+      var html = template(context);
+      $(".display-messaggi.active").append(html);
       $(".input-msg-txt").val("");
       // mentre aspetto la risposta appare sta scrivendo... nella fascia sup----------------
       $(".fascia-sup-utente").find("h6").text("sta scrivendo...");
       // messaggio di risposta statico----------------
       setTimeout(function(){
-
-       $(".display-messaggi.active").append("<div class='messaggio-ricevuto'>" + "ciao" +
-       "<div class='freccina'><i class='fas fa-chevron-down'></i></div> <div class='menu-tendina'><span>Cancella messaggio</span></div><div class='ora'>" + ora + ":" + minuti + "</div></div>");
+       // handlebar template--------------
+       context = { messaggio: "ciao", ora: ora, minuti: minuti, inviato:false };
+       html = template(context);
+       $(".display-messaggi.active").append(html);
 
        $(".contatto-attivo-bg").find("span").text(ora + ":" + minuti);
        // riporto la scritta originaria nella fascia sup------------
